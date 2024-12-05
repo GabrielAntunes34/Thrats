@@ -1,6 +1,6 @@
 run: all
-	./sfml-app
+	./src/sfml-app
 
 all:
-	g++ -c main.cpp
-	g++ main.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+	g++ -c ./src/main.cpp
+	g++ ./src/main.o -o ./src/sfml-app -lsfml-graphics -lsfml-window -lsfml-system
