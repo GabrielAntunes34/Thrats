@@ -1,10 +1,10 @@
 #include <SFML/Graphics.hpp>
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
+int main() {
+    sf::RenderWindow window(sf::VideoMode(1270, 720), "Thrats");
+    sf::CircleShape shape(200.f);
     shape.setFillColor(sf::Color::Green);
+    shape.move(100, 100);
 
     while (window.isOpen())
     {
