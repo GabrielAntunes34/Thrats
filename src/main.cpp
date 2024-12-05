@@ -1,17 +1,21 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/VideoMode.hpp>
+using namespace sf;
 
-int main() {
-    sf::RenderWindow window(sf::VideoMode(1270, 720), "Thrats");
-    sf::CircleShape shape(200.f);
-    shape.setFillColor(sf::Color::Green);
-    shape.move(100, 100);
+int main()
+{
+    VideoMode desktop = VideoMode::getDesktopMode(); // Tamanho da tela
+
+    RenderWindow window(sf::VideoMode(desktop), "Threads - The Game!");
+    CircleShape shape(100.f); // Cria um círculo de raio 100
+    shape.setFillColor(sf::Color::Green); // Preenche o círculo de verde
 
     while (window.isOpen())
     {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed)
                 window.close();
         }
 
