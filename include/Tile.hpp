@@ -33,7 +33,7 @@ class Tile {
         // Setters
         void setTaniblity(bool tangibility);
         void setId(int id);
-        void setSprite(Texture &texture);
+        void setSprite(Texture &texture, float correcao);
 
         void setCost(float cost);
         void setDistance(float distance);

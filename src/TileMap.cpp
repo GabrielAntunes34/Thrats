@@ -242,6 +242,9 @@ bool TileMap::loadMap(const string &fileName) {
     if(csvMatrix.empty()) {
         return false;
     }
+
+    float correcaoEscala = tileSize/16.0f;
+
     for(int i = 0; i < TILE_MAP_H; i++) {
 
         for(int j = 0; j < TILE_MAP_W; j++) {
@@ -250,24 +253,25 @@ bool TileMap::loadMap(const string &fileName) {
             switch(this->tiles[i][j].getId()) {
             case PLAYER:
                 this->initPlayerPosition = tileGridToPixel(i, j);
-                this->tiles[i][j].setSprite(this->tileTexture); // sprite do chão
+                cout << "TileSize: " << tileSize << endl;
+                this->tiles[i][j].setSprite(this->groundTexture, correcaoEscala); // sprite do chão
                 this->tiles[i][j].setCost(1.0f);
                 break;
 
             case ENEMY:
                 this->enemiesPositions.push_back(Vector2u(i, j));
-                this->tiles[i][j].setSprite(this->tileTexture); // Sprite de chão/ spawn do ratinho
+                this->tiles[i][j].setSprite(this->groundTexture, correcaoEscala); // Sprite de chão/ spawn do ratinho
                 this->tiles[i][j].setCost(1.0f);
                 break;
             
             case OBSTACLE:
                 this->tiles[i][j].setTaniblity(true);
-                this->tiles[i][j].setSprite(this->obstacleTexture);  // Sprite do obstáculo
+                this->tiles[i][j].setSprite(this->obstacleTexture, correcaoEscala);  // Sprite do obstáculo
                 this->tiles[i][j].setCost(infy);
 
                 break;
             default:
-                this->tiles[i][j].setSprite(this->groundTexture);  // Ground
+                this->tiles[i][j].setSprite(this->groundTexture, correcaoEscala);  // Ground
                 this->tiles[i][j].setCost(1.0f);
                 break;
             }

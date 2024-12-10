@@ -37,8 +37,10 @@ void Tile::setTaniblity(bool tangibility) {
     this->tangibility = tangibility;
 }
 
-void Tile::setSprite(Texture& texture) {
+void Tile::setSprite(Texture& texture, float correcao) {
     this->sprite.setTexture(texture);
+    //aumentando o tamanho
+    this->sprite.setScale(correcao,correcao);
 }
 
 void Tile::setCost(float cost) {
