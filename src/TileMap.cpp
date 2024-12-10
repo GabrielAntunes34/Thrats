@@ -1,11 +1,8 @@
 #include "../include/TileMap.hpp"
 
-/*
-vector<vector<Tile>> tiles;  
-VertexArray vertexArray;                
-Texture tileAtlas;                      
-int tileSize;
-*/
+////////////////////////////////
+//          auxiliares        //
+////////////////////////////////
 
 // Lê e já instancia os tiles do tileMap
 vector<vector<int>> readCsv(const string& fileName) {
@@ -43,29 +40,15 @@ int calculateTileSize(Vector2u screenSize) {
     return min(screenSize.x / TILE_MAP_W, screenSize.y / TILE_MAP_H);
 }
 
-// Função que converte coordenadas no tile map em coordenadas da tela (pixels)
-Vector2u TileMap::tileGridToPixel(int i, int j) {
-    Vector2u screenPos;
 
-    screenPos.x = (int) i * this->tileSize + (this->tileSize / 2);
-    screenPos.y = (int) j * this->tileSize + (this->tileSize / 2);
-    return screenPos;
-}
-
-// Função que converte coordenadas no tile map em coordenadas da tela (pixels)
-pair<int, int> TileMap::pixelsToTileGrid(Vector2u position) {
-    pair<int, int> gridPos;
-
-    gridPos.first = (int) (position.x - (this->tileSize / 2)) / this->tileSize;
-    gridPos.second = (int) (position.y - (this->tileSize / 2)) / this->tileSize;
-    return gridPos;
-}
+////////////////////////////////
+//          métodos           //
+////////////////////////////////
 
 // Construtor
 TileMap::TileMap(Texture &atlas, Vector2u screenSize) {
     // Inicializando as grades lógica e de renderização
     this->tiles.assign(TILE_MAP_H, vector<Tile>(TILE_MAP_W, Tile()));
-    //this->vertexArray.setPrimitiveType(Quads);
 
     // Salvando os parâmetros informados
     this->tileAtlas = atlas;
@@ -97,7 +80,7 @@ bool TileMap::loadMap(const string &fileName) {
                 break;
             
             case OBSTACLE:
-                this->tiles[i][j].setTaniblity(true);
+                this->tiles[i][j].setTangiblity(true);
                 this->tiles[i][j].setSprite();  // Sprite do obstáculo
             
                 this->tiles[i][j].setSprite();  // Sprie do chão
