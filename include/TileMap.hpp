@@ -1,6 +1,7 @@
 #ifndef TILEMAP_H
 #define TILEMAP_H
 
+#include <SFML/System/Vector2.hpp>
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -27,7 +28,6 @@ class TileMap {
         Texture groundTexture; 
         Texture obstacleTexture;
 
-
         Vector2u initPlayerPosition;        // Posição inicial do jogador
         vector<Vector2u> enemiesPositions;   // Lista coms as posições iniciais de cada grupo de ratos
         int tileSize;                       // Tamaho da tela, para ajuste do aspect ratio
@@ -39,9 +39,15 @@ class TileMap {
         Vector2u tileGridToPixel(int i, int j);
         pair<int, int> pixelsToTileGrid(Vector2u position);
 
+        Vector2u getInitPlayerPosition();
+
         // Operações do tileMap
         bool loadMap(const string &fileName);
         void draw(RenderWindow &window);
+        
+        // para pathfinding
+        void generateIntegrationField(Vector2u goal);
+        void generateFlowField();
 
 };
 
