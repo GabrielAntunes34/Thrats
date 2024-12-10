@@ -193,7 +193,7 @@ TileMap::TileMap(Vector2u screenSize) {
     // Salvando os parâmetros informados
     //this->tileAtlas = &tileAtlas;
     this->tileSize = calculateTileSize(screenSize);
-    this->enemiesPositions = vector<Vector2u>();
+    this->enemiesPositions = vector<Vector2f>();
 
     // CARREGANDO TEXTURAS
 
@@ -217,18 +217,23 @@ TileMap::TileMap(Vector2u screenSize) {
 }
 
 // Função que converte coordenadas no tile map em coordenadas da tela (pixels)
-Vector2u TileMap::tileGridToPixel(int i, int j) {
-    Vector2u screenPos;
-    screenPos.x = (int) i * this->tileSize + (this->tileSize / 2);
-    screenPos.y = (int) j * this->tileSize + (this->tileSize / 2);
+Vector2f TileMap::tileGridToPixel(int i, int j) {
+    Vector2f screenPos;
+    screenPos.x = i * this->tileSize + (this->tileSize / 2);
+    screenPos.y = j * this->tileSize + (this->tileSize / 2);
     return screenPos;
 }
 // Função que converte coordenadas no tile map em coordenadas da tela (pixels)
-pair<int, int> TileMap::pixelsToTileGrid(Vector2u position) {
+pair<int, int> TileMap::pixelsToTileGrid(Vector2f position) {
     pair<int, int> gridPos;
     gridPos.first = (int) (position.x - (this->tileSize / 2)) / this->tileSize;
     gridPos.second = (int) (position.y - (this->tileSize / 2)) / this->tileSize;
     return gridPos;
+}
+
+// funcao que pega (i,j) da matriz de tiles do TileMap e devolve o Tile
+Tile TileMap::getTile(int i, int j) {
+    return tiles[i][j];
 }
 
 
@@ -259,7 +264,7 @@ bool TileMap::loadMap(const string &fileName) {
                 break;
 
             case ENEMY:
-                this->enemiesPositions.push_back(Vector2u(i, j));
+                this->enemiesPositions.push_back(Vector2f(i, j));
                 this->tiles[i][j].setSprite(this->groundTexture, correcaoEscala); // Sprite de chão/ spawn do ratinho
                 this->tiles[i][j].setCost(1.0f);
                 break;
@@ -282,7 +287,7 @@ bool TileMap::loadMap(const string &fileName) {
 }
 
 //retornar a posicao inicial do jogador
-Vector2u TileMap::getInitPlayerPosition(){
+Vector2f TileMap::getInitPlayerPosition(){
     return this->initPlayerPosition;
 }   
 

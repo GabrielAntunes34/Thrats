@@ -42,7 +42,7 @@ int main()
     int frameCounter = 0;
     int framesToRecalculate = 1;
 
-    Vector2u ratTilePos = Vector2u(0,0);
+    Vector2u ratTilePos = Vector2u(20,10);
 
     int i = 0;
 
@@ -55,31 +55,42 @@ int main()
                 window.close();
         }
         
-        if(i < 100){
-            rat.move();
-        }
-        i++;
+        // ver o tile q o rato tá
+        auto [x, y] = rat.getPosition();
+        auto [a, b] = tileMap.pixelsToTileGrid(Vector2f(x, y));
+        Tile rat_tile = tileMap.getTile(b, a);
+
+        tileMap.generateIntegrationField(ratTilePos);
+        tileMap.generateFlowField();
+
+        // pegar o vetor de mov. desse tile e atualizar a pos do rato
+        Vector2f vector = rat_tile.getFlowDirection();
+
+        cout << a << " " << b << '\n';
+        cout << vector.x << " " << vector.y << '\n';
+        cout << "-----\n";
+        rat.move(vector);
+        
 
         //perseguindo o rato
+        /*
         if(frameCounter % framesToRecalculate == 0){
-              
-                
                 //converte a posicao do rato em pixels para a posicao de tile
                 Vector2u ratTilePos = Vector2u(tileMap.pixelsToTileGrid(rat.getPosition()).first,
                                                 tileMap.pixelsToTileGrid(rat.getPosition()).second); 
-                tileMap.generateIntegrationField(ratTilePos);
-                tileMap.generateFlowField();
+                
         }
+        */
 
         frameCounter++;
 
         
         window.clear();
 
+        tileMap.draw(window);
         rat.draw(window);
-        tileMap.draw(window); //alterado para desenhar o flow field 
-        //tileMap.drawFlowField(window);
-        
+        tileMap.drawFlowField(window);
+
         window.display();
     }
 

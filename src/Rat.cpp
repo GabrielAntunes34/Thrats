@@ -1,4 +1,5 @@
 #include "../include/Rat.h"
+#include <cmath>
 #include <SFML/System/Vector2.hpp>
 
 Rat::Rat(float x, float y, float radius) {
@@ -16,17 +17,20 @@ void Rat::draw(RenderWindow &window) {
     window.draw(shape);
 }
 
-void Rat::move() {
-    // this->x += 0.1;
-    this->y += 1;
-    this->x += 1;
-    shape.move(1, 1);
+void Rat::move(Vector2f flow) {
+    if (fabs(flow.x) < 0.0001f && fabs(flow.y) < 0.0001f) {
+        return;
+    }
+
+    this->y += flow.y;
+    this->x += flow.x;
+    shape.move(flow.x, flow.y);
 }
 
-Vector2u Rat::getPosition() {
+Vector2f Rat::getPosition() {
     radius = shape.getRadius();
 
-    return Vector2u((unsigned int)x + 2.5* radius, (unsigned int)y + 2.5*radius);
+    return Vector2f(x + 2.5* radius, y + 2.5*radius);
 
 }
 

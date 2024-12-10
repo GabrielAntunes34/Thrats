@@ -10,11 +10,11 @@ class Rat {
     public:
         Rat(float x, float y, float radius);
         //mover o rato
-        void move();
+        void move(Vector2f flow);
         //desenhar o rato
         void draw(RenderWindow &window);
 
-        Vector2u getPosition();
+        Vector2f getPosition();
         int getRadius();
 
     private:

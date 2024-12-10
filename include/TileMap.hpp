@@ -28,18 +28,19 @@ class TileMap {
         Texture groundTexture; 
         Texture obstacleTexture;
 
-        Vector2u initPlayerPosition;        // Posição inicial do jogador
-        vector<Vector2u> enemiesPositions;   // Lista coms as posições iniciais de cada grupo de ratos
+        Vector2f initPlayerPosition;        // Posição inicial do jogador
+        vector<Vector2f> enemiesPositions;   // Lista coms as posições iniciais de cada grupo de ratos
         int tileSize;                       // Tamaho da tela, para ajuste do aspect ratio
 
     public:
         TileMap(Vector2u screenSize);
 
         // Operações entre tela e tileMap
-        Vector2u tileGridToPixel(int i, int j);
-        pair<int, int> pixelsToTileGrid(Vector2u position);
+        Vector2f tileGridToPixel(int i, int j);
+        pair<int, int> pixelsToTileGrid(Vector2f position);
 
-        Vector2u getInitPlayerPosition();
+        Vector2f getInitPlayerPosition();
+        Tile getTile(int i, int j);
 
         // Operações do tileMap
         bool loadMap(const string &fileName);
