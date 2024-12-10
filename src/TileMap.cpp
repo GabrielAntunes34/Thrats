@@ -1,4 +1,6 @@
+
 #include "../include/TileMap.hpp"
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <cstdio>
 #include <iostream>
 
@@ -60,6 +62,24 @@ TileMap::TileMap(Vector2u screenSize) {
     this->tileSize = calculateTileSize(screenSize);
     this->enemiesPositions = vector<Vector2u>();
 
+    // CARREGANDO TEXTURAS
+
+    // Carregando a textura do chão
+    if(!this->groundTexture.loadFromFile("assets/ground.png")) {
+        cerr << "Erro ao carregar a textura do chão" << endl;
+    }
+
+    // textura obstaculo (temporária)
+    RectangleShape rectangle(Vector2f(this->tileSize, this->tileSize)); // Define o tamanho do retângulo
+    rectangle.setFillColor(Color::Blue); // Define a cor do retângulo como azul
+
+    RenderTexture renderTexture;
+    renderTexture.create(50, 50); // Tamanho da textura
+    renderTexture.clear(Color::Transparent);
+    renderTexture.draw(rectangle);
+    renderTexture.display();
+    this->obstacleTexture = renderTexture.getTexture(); // Salva a textura de obstáculos como membro da classe
+
     // LEMBRAR DE AJUSTAR O ASPECT RATIO OU NA MAIN, OU EM ALGUM ARQUIVO DE CONFIG
 }
 
@@ -82,38 +102,6 @@ pair<int, int> TileMap::pixelsToTileGrid(Vector2u position) {
 // Dado o nome de um CSV, essa função mapeaia todos os tiles lógicos e gráficos do nível
 bool TileMap::loadMap(const string &fileName) {
     vector<vector<int>> csvMatrix;
-
-    // ================
-    // Texturas de exemplo
-    // ================
-
-    // Criando um retângulo preto padrão
-    sf::RectangleShape rectangle(sf::Vector2f(this->tileSize, this->tileSize)); // Define o tamanho do retângulo
-    rectangle.setFillColor(sf::Color::Red); // Define a cor do retângulo como vermelho
-
-    // Criando uma textura a partir do retângulo
-    sf::RenderTexture renderTexture;
-    renderTexture.create(50, 50); // Tamanho da textura
-    renderTexture.clear(sf::Color::Transparent);
-    renderTexture.draw(rectangle);
-    renderTexture.display();
-    sf::Texture texture = renderTexture.getTexture();
-    this->tileTexture = renderTexture.getTexture(); // Salva a textura como membro da classe
-
-
-     // Criando uma textura para obstáculos a partir do retângulo
-    rectangle.setFillColor(sf::Color::Blue); // Define a cor do retângulo como azul para obstáculos
-    renderTexture.clear(sf::Color::Transparent);
-    renderTexture.draw(rectangle);
-    renderTexture.display();
-    this->obstacleTexture = renderTexture.getTexture(); // Salva a textura de obstáculos como membro da classe
-
-    // =================
-    // Fim das texturas de exemplo
-    // =================
-
-
-
 
     // Lendo o CSV e instanciando os tiles lógicos (por enquanto)
     csvMatrix = readCsv(fileName);
@@ -142,7 +130,7 @@ bool TileMap::loadMap(const string &fileName) {
                 this->tiles[i][j].setSprite(this->obstacleTexture);  // Sprite do obstáculo
                 break;
             default:
-                this->tiles[i][j].setSprite(this->tileTexture);  // Ground
+                this->tiles[i][j].setSprite(this->groundTexture);  // Ground
                 break;
             }
         }
@@ -162,4 +150,3 @@ void TileMap::draw(RenderWindow &window){
     }    
 
 }
-

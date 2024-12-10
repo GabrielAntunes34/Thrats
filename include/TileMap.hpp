@@ -23,8 +23,9 @@ class TileMap {
         //Texture tileAtlas;                  // Referencia a imagem, na memória, com todos os sprites
         
         
-        Texture tileTexture; // Adicione esta linha
-        Texture obstacleTexture; // Adicione esta linha
+        Texture tileTexture;
+        Texture groundTexture; 
+        Texture obstacleTexture;
 
 
         Vector2u initPlayerPosition;        // Posição inicial do jogador
