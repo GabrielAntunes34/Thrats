@@ -19,7 +19,7 @@ using namespace std;
 class TileMap {
     private:
         vector<vector<Tile>> tiles;         // Matriz de tiles lógicos
-        //VertexArray vertexArray;            // Array do mapa a ser renderizado
+        //VertexArray vertexArray;          // Array do mapa a ser renderizado
         Texture tileAtlas;                  // Referencia a imagem, na memória, com todos os sprites
         Vector2u initPlayerPosition;        // Posição inicial do jogador
         vector<Vector2u> enemiesPositions;   // Lista coms as posições iniciais de cada grupo de ratos
