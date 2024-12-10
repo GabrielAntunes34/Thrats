@@ -2,6 +2,7 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <vector>
 
+#include "../include/TileMap.hpp"
 #include "../include/Rat.h"
 
 using namespace sf;
@@ -18,7 +19,12 @@ int main()
 
     
     vector<Rat> rats;
+    TileMap tileMap(window.getSize());
 
+    // Carrega o mapa
+    tileMap.loadMap("assets/testGround.csv");
+
+    // Desenha o mapa inicialmente antes do looping    
     //criando ratos de exemplo
     for(int i = 0; i < 15; i++) {
         rats.push_back(Rat(50 * i, 50 * i, 20));
@@ -45,7 +51,7 @@ int main()
         for (auto&rat : rats) {
             rat.draw(window);
         }
-
+        tileMap.draw(window); 
         window.display();
     }
 

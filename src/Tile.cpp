@@ -11,7 +11,7 @@ bool Tile::isTangible() {
     return this->tangibility;
 }
 
-Sprite Tile::getSprite() {
+Sprite& Tile::getSprite() {
     return this->sprite;
 }
 
@@ -25,6 +25,6 @@ void Tile::setTaniblity(bool tangibility) {
     this->tangibility = tangibility;
 }
 
-void Tile::setSprite(Texture texture) {
+void Tile::setSprite(Texture& texture) {
     this->sprite.setTexture(texture);
 }

@@ -1,8 +1,12 @@
 #include "../include/TileMap.hpp"
+#include <cstdio>
+#include <iostream>
+
 
 ////////////////////////////////
 //          auxiliares        //
 ////////////////////////////////
+
 
 // Lê e já instancia os tiles do tileMap
 vector<vector<int>> readCsv(const string& fileName) {
@@ -18,17 +22,18 @@ vector<vector<int>> readCsv(const string& fileName) {
     }
 
     // Lendo os números do tileMap e guradando na matriz
-    string line;
     while(getline(file, line)) {
         stringstream ss(line);   // Iterador para parsear a string
-        string value;            // Auxiliar que mantem o valor lido
-
+        string value;
+                    // Auxiliar que mantem o valor lido
+        j = 0;
+        
         // Guardando os valores convertidos para inteiros na matriz
         while(getline(ss, value, ',')) {
             contents[i][j] = stoi(value);
-            i++;
+            j++;
         }
-        j++;
+        i++;
     }
     file.close();
 
@@ -46,52 +51,115 @@ int calculateTileSize(Vector2u screenSize) {
 ////////////////////////////////
 
 // Construtor
-TileMap::TileMap(Texture &atlas, Vector2u screenSize) {
+TileMap::TileMap(Vector2u screenSize) {
     // Inicializando as grades lógica e de renderização
     this->tiles.assign(TILE_MAP_H, vector<Tile>(TILE_MAP_W, Tile()));
 
     // Salvando os parâmetros informados
-    this->tileAtlas = atlas;
+    //this->tileAtlas = &tileAtlas;
     this->tileSize = calculateTileSize(screenSize);
     this->enemiesPositions = vector<Vector2u>();
 
     // LEMBRAR DE AJUSTAR O ASPECT RATIO OU NA MAIN, OU EM ALGUM ARQUIVO DE CONFIG
 }
 
+// Função que converte coordenadas no tile map em coordenadas da tela (pixels)
+Vector2u TileMap::tileGridToPixel(int i, int j) {
+    Vector2u screenPos;
+    screenPos.x = (int) i * this->tileSize + (this->tileSize / 2);
+    screenPos.y = (int) j * this->tileSize + (this->tileSize / 2);
+    return screenPos;
+}
+// Função que converte coordenadas no tile map em coordenadas da tela (pixels)
+pair<int, int> TileMap::pixelsToTileGrid(Vector2u position) {
+    pair<int, int> gridPos;
+    gridPos.first = (int) (position.x - (this->tileSize / 2)) / this->tileSize;
+    gridPos.second = (int) (position.y - (this->tileSize / 2)) / this->tileSize;
+    return gridPos;
+}
+
+
 // Dado o nome de um CSV, essa função mapeaia todos os tiles lógicos e gráficos do nível
 bool TileMap::loadMap(const string &fileName) {
     vector<vector<int>> csvMatrix;
 
+    // ================
+    // Texturas de exemplo
+    // ================
+
+    // Criando um retângulo preto padrão
+    sf::RectangleShape rectangle(sf::Vector2f(this->tileSize, this->tileSize)); // Define o tamanho do retângulo
+    rectangle.setFillColor(sf::Color::Red); // Define a cor do retângulo como vermelho
+
+    // Criando uma textura a partir do retângulo
+    sf::RenderTexture renderTexture;
+    renderTexture.create(50, 50); // Tamanho da textura
+    renderTexture.clear(sf::Color::Transparent);
+    renderTexture.draw(rectangle);
+    renderTexture.display();
+    sf::Texture texture = renderTexture.getTexture();
+    this->tileTexture = renderTexture.getTexture(); // Salva a textura como membro da classe
+
+
+     // Criando uma textura para obstáculos a partir do retângulo
+    rectangle.setFillColor(sf::Color::Blue); // Define a cor do retângulo como azul para obstáculos
+    renderTexture.clear(sf::Color::Transparent);
+    renderTexture.draw(rectangle);
+    renderTexture.display();
+    this->obstacleTexture = renderTexture.getTexture(); // Salva a textura de obstáculos como membro da classe
+
+    // =================
+    // Fim das texturas de exemplo
+    // =================
+
+
+
+
     // Lendo o CSV e instanciando os tiles lógicos (por enquanto)
     csvMatrix = readCsv(fileName);
+
+    if(csvMatrix.empty()) {
+        return false;
+    }
     for(int i = 0; i < TILE_MAP_H; i++) {
+
         for(int j = 0; j < TILE_MAP_W; j++) {
             this->tiles[i][j].setId(csvMatrix[i][j]);
 
             switch(this->tiles[i][j].getId()) {
             case PLAYER:
                 this->initPlayerPosition = tileGridToPixel(i, j);
-                this->tiles[i][j].setSprite(); // sprite do chão
+                this->tiles[i][j].setSprite(this->tileTexture); // sprite do chão
                 break;
 
             case ENEMY:
                 this->enemiesPositions.push_back(Vector2u(i, j));
-                this->tiles[i][j].setSprite(); // Sprite de chão/ spawn do ratinho
+                this->tiles[i][j].setSprite(this->tileTexture); // Sprite de chão/ spawn do ratinho
                 break;
             
             case OBSTACLE:
-                this->tiles[i][j].setTangiblity(true);
-                this->tiles[i][j].setSprite();  // Sprite do obstáculo
-            
-                this->tiles[i][j].setSprite();  // Sprie do chão
-
+                this->tiles[i][j].setTaniblity(true);
+                this->tiles[i][j].setSprite(this->obstacleTexture);  // Sprite do obstáculo
+                break;
             default:
-                this->tiles[i][j].setSprite();  // Ground
+                this->tiles[i][j].setSprite(this->tileTexture);  // Ground
                 break;
             }
         }
+        cout << endl;
     }
+    return true;
+}
 
-
+// Desenhando os tiles na tela, pegando a posição de cada um e colocando em relaçao ao tamanho do tile
+void TileMap::draw(RenderWindow &window){
+    for(int i = 0; i < TILE_MAP_H; i++) {
+        
+        for(int j = 0; j < TILE_MAP_W; j++){
+            this->tiles[i][j].getSprite().setPosition(j*tileSize, i*tileSize);
+            window.draw(this->tiles[i][j].getSprite());
+        }
+    }    
 
 }
+

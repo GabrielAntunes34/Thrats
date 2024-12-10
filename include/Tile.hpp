@@ -19,12 +19,12 @@ class Tile {
         // Getters
         int getId();
         bool isTangible();
-        Sprite getSprite();
+        Sprite& getSprite();
 
         // Setters
         void setTaniblity(bool tangibility);
         void setId(int id);
-        void setSprite(Texture texture);
+        void setSprite(Texture &texture);
 
         // Mechanics
         // CalculatePath???

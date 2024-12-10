@@ -20,13 +20,19 @@ class TileMap {
     private:
         vector<vector<Tile>> tiles;         // Matriz de tiles lógicos
         //VertexArray vertexArray;          // Array do mapa a ser renderizado
-        Texture tileAtlas;                  // Referencia a imagem, na memória, com todos os sprites
+        //Texture tileAtlas;                  // Referencia a imagem, na memória, com todos os sprites
+        
+        
+        Texture tileTexture; // Adicione esta linha
+        Texture obstacleTexture; // Adicione esta linha
+
+
         Vector2u initPlayerPosition;        // Posição inicial do jogador
         vector<Vector2u> enemiesPositions;   // Lista coms as posições iniciais de cada grupo de ratos
         int tileSize;                       // Tamaho da tela, para ajuste do aspect ratio
 
     public:
-        TileMap(Texture &atlas, Vector2u screenSize);
+        TileMap(Vector2u screenSize);
 
         // Operações entre tela e tileMap
         Vector2u tileGridToPixel(int i, int j);
