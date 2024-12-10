@@ -283,18 +283,18 @@ Vector2u TileMap::getInitPlayerPosition(){
 }   
 
 // Desenhando os tiles na tela, pegando a posição de cada um e colocando em relaçao ao tamanho do tile
-// void TileMap::draw(RenderWindow &window){
-//     for(int i = 0; i < TILE_MAP_H; i++) {
-        
-//         for(int j = 0; j < TILE_MAP_W; j++){
-//             this->tiles[i][j].getSprite().setPosition(j*tileSize, i*tileSize);
-//             window.draw(this->tiles[i][j].getSprite());
-//         }
-//     }    
-
-// }
-
 void TileMap::draw(RenderWindow &window){
+    for(int i = 0; i < TILE_MAP_H; i++) {
+        
+        for(int j = 0; j < TILE_MAP_W; j++){
+            this->tiles[i][j].getSprite().setPosition(j*tileSize, i*tileSize);
+            window.draw(this->tiles[i][j].getSprite());
+        }
+    }    
+
+}
+
+void TileMap::drawFlowField(RenderWindow &window){
     for(int i = 0; i < TILE_MAP_H; i++) {
         
         for(int j = 0; j < TILE_MAP_W; j++){

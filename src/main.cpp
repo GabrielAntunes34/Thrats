@@ -28,14 +28,23 @@ int main()
     // Suponha que o objetivo é o jogador
     // precisamos transformar em cordenadas de tile
 
-    Vector2u PlayerTilePos = Vector2u(tileMap.pixelsToTileGrid(tileMap.getInitPlayerPosition()).first,
-                                      tileMap.pixelsToTileGrid(tileMap.getInitPlayerPosition()).second);
+    //SE QUISERMOS VER A POSICAO DO PLAYER:
 
-    tileMap.generateIntegrationField(PlayerTilePos);
-    tileMap.generateFlowField();    
+    // Vector2u PlayerTilePos = Vector2u(tileMap.pixelsToTileGrid(tileMap.getInitPlayerPosition()).first,
+    //                                   tileMap.pixelsToTileGrid(tileMap.getInitPlayerPosition()).second);
 
+    // tileMap.generateIntegrationField(PlayerTilePos);
+    // tileMap.generateFlowField();    
 
-    Rat rat(100, 100, 10);
+    Rat rat(20, 100, 10);
+
+    //Contador para decidir quando recalcular o flow field (fazer todo frame é custoso)
+    int frameCounter = 0;
+    int framesToRecalculate = 1;
+
+    Vector2u ratTilePos = Vector2u(0,0);
+
+    int i = 0;
 
     while (window.isOpen())
     {
@@ -45,13 +54,31 @@ int main()
             if (event.type == Event::Closed)
                 window.close();
         }
+        
+        if(i < 100){
+            rat.move();
+        }
+        i++;
 
-        rat.move();
+        //perseguindo o rato
+        if(frameCounter % framesToRecalculate == 0){
+              
+                
+                //converte a posicao do rato em pixels para a posicao de tile
+                Vector2u ratTilePos = Vector2u(tileMap.pixelsToTileGrid(rat.getPosition()).first,
+                                                tileMap.pixelsToTileGrid(rat.getPosition()).second); 
+                tileMap.generateIntegrationField(ratTilePos);
+                tileMap.generateFlowField();
+        }
 
+        frameCounter++;
+
+        
         window.clear();
 
         rat.draw(window);
         tileMap.draw(window); //alterado para desenhar o flow field 
+        //tileMap.drawFlowField(window);
         
         window.display();
     }

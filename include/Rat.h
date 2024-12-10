@@ -2,6 +2,7 @@
 #define RAT_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 using namespace sf;
 
 
@@ -12,6 +13,9 @@ class Rat {
         void move();
         //desenhar o rato
         void draw(RenderWindow &window);
+
+        Vector2u getPosition();
+        int getRadius();
 
     private:
         float x, y, radius;

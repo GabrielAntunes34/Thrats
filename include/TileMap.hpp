@@ -44,6 +44,8 @@ class TileMap {
         // Operações do tileMap
         bool loadMap(const string &fileName);
         void draw(RenderWindow &window);
+        void drawFlowField(RenderWindow &window);
+
         
         // para pathfinding
         void generateIntegrationField(Vector2u goal);
