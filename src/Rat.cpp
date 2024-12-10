@@ -9,22 +9,22 @@ Rat::Rat(float x, float y, float radius) {
 
     shape.setRadius(radius);
     shape.setFillColor(Color::Red);
-    shape.setPosition(x+0.5, y);
-
+    shape.setPosition(x, y);
 }
 
 void Rat::draw(RenderWindow &window) {
     window.draw(shape);
 }
 
-void Rat::move(Vector2f flow) {
+bool Rat::move(Vector2f flow) {
     if (fabs(flow.x) < 0.0001f && fabs(flow.y) < 0.0001f) {
-        return;
+        return false;
     }
 
     this->y += flow.y;
     this->x += flow.x;
     shape.move(flow.x, flow.y);
+    return true;
 }
 
 Vector2f Rat::getPosition() {

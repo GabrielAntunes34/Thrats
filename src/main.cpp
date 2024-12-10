@@ -42,7 +42,7 @@ int main()
     int frameCounter = 0;
     int framesToRecalculate = 1;
 
-    Vector2u ratTilePos = Vector2u(20,10);
+    Vector2u ratTilePos = Vector2u(5, 5);
 
     int i = 0;
 
@@ -65,25 +65,7 @@ int main()
 
         // pegar o vetor de mov. desse tile e atualizar a pos do rato
         Vector2f vector = rat_tile.getFlowDirection();
-
-        cout << a << " " << b << '\n';
-        cout << vector.x << " " << vector.y << '\n';
-        cout << "-----\n";
         rat.move(vector);
-        
-
-        //perseguindo o rato
-        /*
-        if(frameCounter % framesToRecalculate == 0){
-                //converte a posicao do rato em pixels para a posicao de tile
-                Vector2u ratTilePos = Vector2u(tileMap.pixelsToTileGrid(rat.getPosition()).first,
-                                                tileMap.pixelsToTileGrid(rat.getPosition()).second); 
-                
-        }
-        */
-
-        frameCounter++;
-
         
         window.clear();
 
