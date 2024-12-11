@@ -96,7 +96,7 @@ int main()
             rat.move(vector);
 
             // Atualizando a posição do jogador
-            deltaTime = clock.restart();
+            Time deltaTime = clock.restart();
             player.move(deltaTime, tileMap,window.getSize());
 
 
