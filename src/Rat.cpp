@@ -7,6 +7,7 @@ Rat::Rat(float x, float y, float radius) {
     this->x = x;
     this->y = y;
     this->radius = radius;
+    this->size = 16;
 
     shape.setRadius(radius);
     shape.setPosition(x, y);
@@ -15,7 +16,7 @@ Rat::Rat(float x, float y, float radius) {
     // textura do objetivo
     if(!this->ratTexture.loadFromFile("assets/ratinho.png")) {
         cerr << "Erro ao carregar a textura do objetivo" << endl;
-    }    
+    }
     shape.setTexture(&ratTexture);
 }
 
@@ -23,15 +24,25 @@ void Rat::draw(RenderWindow &window) {
     window.draw(shape);
 }
 
-bool Rat::move(Vector2f flow) {
-    if (fabs(flow.x) < 0.0001f && fabs(flow.y) < 0.0001f) {
+bool Rat::move(sf::Vector2f flow, sf::Vector2f separation, Vector2u screenSize) {
+    if (std::fabs(flow.x) < 0.0001f && std::fabs(flow.y) < 0.0001f) {
         return false;
     }
 
-    this->y += flow.y;
-    this->x += flow.x;
-    shape.move(flow.x, flow.y);
-    float angle = atan2(flow.y, flow.x) * 180 / M_PI;
+    // Combina o vetor de fluxo com o vetor de separação
+    sf::Vector2f combined = flow + separation;
+    pair<float, float> newPosition = {this->x + combined.x, this->y + combined.y};
+
+    if(!(newPosition.first < 0 || newPosition.first >= screenSize.x - this->size))
+        this->x = newPosition.first;
+    else
+        combined.x = 0;
+    if(!(newPosition.second < 0 || newPosition.second >= screenSize.y - this->size))
+        this->y = newPosition.second;
+    else
+        combined.y = 0;
+    shape.move(combined.x, combined.y);
+    float angle = std::atan2(combined.y, combined.x) * 180 / M_PI;
     shape.setRotation(angle);
     return true;
 }

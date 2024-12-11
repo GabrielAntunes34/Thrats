@@ -40,7 +40,6 @@ void Player::setPosition(Vector2f position, Vector2u screenSize) {
         this->position.y = position.y;
 
     // Movendo o sprite na tela
-    cout << this->position.x << "  " << this->position.y << endl;
     this->sprite.setPosition(this->position);
 }
 

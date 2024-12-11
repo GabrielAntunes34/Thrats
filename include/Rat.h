@@ -13,7 +13,7 @@ class Rat {
     public:
         Rat(float x, float y, float radius);
         //mover o rato
-        bool move(Vector2f flow);
+        bool move(Vector2f flow, Vector2f separation, Vector2u screenSize);
         //desenhar o rato
         void draw(RenderWindow &window);
 
@@ -24,6 +24,7 @@ class Rat {
         float x, y, radius;
         CircleShape shape;
         Texture ratTexture;
+        int size;
 };
 
 #endif // RAT_H

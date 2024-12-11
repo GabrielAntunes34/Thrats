@@ -262,13 +262,12 @@ bool TileMap::loadMap(const string &fileName) {
             switch(this->tiles[i][j].getId()) {
             case PLAYER:
                 this->initPlayerPosition = tileGridToPixel(i, j);
-                cout << "TileSize: " << tileSize << endl;
                 this->tiles[i][j].setSprite(this->groundTexture, correcaoEscala); // sprite do chão
                 this->tiles[i][j].setCost(1.0f);
                 break;
 
             case ENEMY:
-                this->enemiesPositions.push_back(Vector2f(i, j));
+                this->enemiesPositions.push_back(Vector2f(j, i));
                 this->tiles[i][j].setSprite(this->groundTexture, correcaoEscala); // Sprite de chão/ spawn do ratinho
                 this->tiles[i][j].setCost(1.0f);
                 break;
@@ -290,7 +289,6 @@ bool TileMap::loadMap(const string &fileName) {
                 break;
             }
         }
-        cout << endl;
     }
     return true;
 }
@@ -316,6 +314,11 @@ int TileMap::verifyPosition(Vector2f position) {
 int TileMap::getTileSize() {
     return this->tileSize;
 }
+
+vector<Vector2f> TileMap::getEnemiesPositions() {
+    return this->enemiesPositions;
+}
+
 
 // Desenhando os tiles na tela, pegando a posição de cada um e colocando em relaçao ao tamanho do tile
 void TileMap::draw(RenderWindow &window){

@@ -59,6 +59,8 @@ class TileMap {
         void generateIntegrationField(Vector2f goal);
         void generateFlowField();
 
+        vector<Vector2f> getEnemiesPositions();
+
 };
 
 

@@ -9,6 +9,7 @@
 #include "../include/Rat.h"
 #include "../include/Menu.hpp"
 #include "../include/Player.hpp"
+#include "../include/Litter.hpp"
 
 
 using namespace sf;
@@ -45,8 +46,6 @@ int main()
     // Seres vivos
     // =================
 
-    Rat rat(20, 100, 10);    
-
     // Shape do Player
     Texture tex;
     if(!tex.loadFromFile("assets/bruno_antunes_barbosa.png")) {
@@ -64,6 +63,11 @@ int main()
     
     int menuSelection = menu.run(tileMap);
 
+    // Ninhada
+    
+    Litter litter(tileMap.getEnemiesPositions()[0], 500, tileMap);
+    Litter litter2(tileMap.getEnemiesPositions()[1], 500, tileMap);
+
     while (window.isOpen())
     {
         if (menuSelection == 0) {
@@ -76,8 +80,7 @@ int main()
                     window.close();
             }
 
-            // Fazer o rato seguir o player
-
+            // Fazendo o flow field
             Vector2f goal = player.getPosition();
             //converter goal para pixelsToTileGrid
             Vector2f goalTilePos = Vector2f(tileMap.pixelsToTileGrid(goal).first,
@@ -87,13 +90,17 @@ int main()
             tileMap.generateFlowField();
 
             // ver o tile q o rato tá
-            auto [x, y] = rat.getPosition();
-            auto [a, b] = tileMap.pixelsToTileGrid(Vector2f(x, y));
-            Tile rat_tile = tileMap.getTile(b, a);
+            // auto [x, y] = rat.getPosition();
+            // auto [a, b] = tileMap.pixelsToTileGrid(Vector2f(x, y));
+            // Tile rat_tile = tileMap.getTile(b, a);
             
-            // pegar o vetor de mov. desse tile e atualizar a pos do rato
-            Vector2f vector = rat_tile.getFlowDirection();
-            rat.move(vector);
+            // // pegar o vetor de mov. desse tile e atualizar a pos do rato
+            // Vector2f vector = rat_tile.getFlowDirection();
+            // rat.move(vector);
+
+            // Atualizando a posição do rato
+            litter.update(window.getSize());
+            litter2.update(window.getSize());
 
             // Atualizando a posição do jogador
             Time deltaTime = clock.restart();
@@ -104,8 +111,9 @@ int main()
             
             tileMap.draw(window);
             player.draw(window);
-            rat.draw(window);
-            // tileMap.drawFlowField(window);
+            litter.draw(window);
+            litter2.draw(window);
+            tileMap.drawFlowField(window);
 
             //verifica se o player chegou no objetivo
             if(tileMap.verifyPosition(player.getPosition()) == GOAL){
