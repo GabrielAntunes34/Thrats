@@ -59,13 +59,6 @@ bool Rat::move(sf::Vector2f flow, sf::Vector2f separation, Vector2u screenSize) 
     return true;
 }
 
-// Vector2f Rat::getPosition() {
-//     radius = shape.getRadius();
-
-//     return Vector2f(x + 2.5* radius, y + 2.5*radius);
-
-// }
-
 Vector2f Rat::getPosition() {
     // Agora, como definimos a origem do shape no centro,
     // (x, y) já é o centro do rato
