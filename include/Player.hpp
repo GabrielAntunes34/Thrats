@@ -18,6 +18,7 @@ class Player {
     private:
         Vector2f position;
         Vector2f velocity;
+        bool moving;
         bool alive;
         bool tangibility;
         Sprite sprite;
