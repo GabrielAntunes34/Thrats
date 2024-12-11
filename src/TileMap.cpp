@@ -96,7 +96,54 @@ void TileMap::generateFlowField(){
             //se a distancia for infinita, significa que nao temos como chegar la
             //podemos definir o flowDirectionm como (0,0)
             if(currentDist == infy){
-                tiles[y][x].setFlowDirection(Vector2f(0.0f, 0.0f));
+                // esse cara eh um obstaculo
+                // tenho q ver para onde a seta aponta
+                Vector2f dir = Vector2f(0.0f, 0.0f);
+
+                if (y+1 >= TILE_MAP_H) {
+                    if (tiles[y-1][x].getId() != OBSTACLE) {
+                        dir.y = 1;
+                    }
+                    if (x+1 >= TILE_MAP_W) {
+                        if (tiles[y][x-1].getId() != OBSTACLE) {
+                            dir.x = -1;
+                        }
+                    } else {
+                        if (tiles[y][x+1].getId() != OBSTACLE) {
+                            dir.x = 1;
+                        }
+                        if (x-1 >= 0) {
+                            if (tiles[y][x-1].getId() != OBSTACLE) {
+                                dir.x = -1;
+                            }
+                        }
+                    }
+                } else {
+                    if (tiles[y+1][x].getId() != OBSTACLE) {
+                        dir.y = 1;
+                    }
+                    if (y-1 >= 0) {
+                        if (tiles[y-1][x].getId() != OBSTACLE) {
+                            dir.y = -1;
+                        }
+                    }
+                    if (x+1 >= TILE_MAP_W) {
+                        if (tiles[y][x-1].getId() != OBSTACLE) {
+                            dir.x = -1;
+                        }
+                    } else {
+                        if (tiles[y][x+1].getId() != OBSTACLE) {
+                            dir.x = 1;
+                        }
+                        if (x-1 >= 0) {
+                            if (tiles[y][x-1].getId() != OBSTACLE) {
+                                dir.x = -1;
+                            }
+                        }
+                    }
+                }
+
+                tiles[y][x].setFlowDirection(dir);
                 continue;
             }
 
