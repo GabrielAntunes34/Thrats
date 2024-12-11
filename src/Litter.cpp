@@ -8,7 +8,6 @@ pair<int, int> getGridPosition(const Vector2f& position, float gridSize) {
 }
 
 
-
 Litter::Litter(Vector2f spawn, int size,  TileMap &tileMap) 
     : spawn(spawn), size(size), tileMap(tileMap) { // Inicializando tileMap na lista de inicialização
     // Definir GRID_SIZE baseado no tileSize do tileMap
