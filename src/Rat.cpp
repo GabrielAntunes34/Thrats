@@ -16,7 +16,6 @@ Rat::Rat(float x, float y, float radius) {
     shape.setPosition(x, y);
 
 
-
     // textura do objetivo
     if(!this->ratTexture.loadFromFile("assets/ratinho.png")) {
         cerr << "Erro ao carregar a textura do objetivo" << endl;
