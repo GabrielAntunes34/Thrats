@@ -40,7 +40,7 @@ int Rat::move(sf::Vector2f flow, sf::Vector2f separation, Vector2u screenSize, s
     float newY = this->y + combined.y;
 
     // Verifica se não sai da tela, considerando half-size
-    float halfSize = this->size / 2.0f;
+    float halfSize = 0;
     if (!(newX - halfSize < 0 || newX + halfSize >= screenSize.x))
         this->x = newX;
     else
@@ -64,9 +64,7 @@ int Rat::move(sf::Vector2f flow, sf::Vector2f separation, Vector2u screenSize, s
 }
 
 Vector2f Rat::getPosition() {
-    // Agora, como definimos a origem do shape no centro,
-    // (x, y) já é o centro do rato
-    return Vector2f(x, y);
+    return Vector2f(x + 2.5*radius, y + 2.5*radius);
 }
 
 int Rat::getRadius() {
