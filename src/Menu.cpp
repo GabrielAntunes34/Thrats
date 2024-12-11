@@ -2,7 +2,7 @@
 #include "../include/TileMap.hpp"
 
 Menu::Menu(sf::RenderWindow &window, const string &fontPath) :
-window(window), selectedIndex(0) {
+window(window) {
     if (!font.loadFromFile(fontPath)) {
         throw std::runtime_error("Failed to load font");
     }

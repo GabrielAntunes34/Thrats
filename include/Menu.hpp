@@ -10,7 +10,6 @@ class Menu {
     private:
         sf::Font font;
         vector<sf::Text> menuText;
-        int selectedIndex;
         sf::RenderWindow &window;
     
     public:
