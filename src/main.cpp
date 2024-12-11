@@ -17,7 +17,7 @@ using namespace std;
 int main()
 {
     VideoMode desktop = VideoMode::getDesktopMode(); // Tamanho da tela
-
+    Clock clock;                                     // clock global do jogo
     // ===============
     // MAPAS
     // ===============
@@ -94,7 +94,10 @@ int main()
             // pegar o vetor de mov. desse tile e atualizar a pos do rato
             Vector2f vector = rat_tile.getFlowDirection();
             rat.move(vector);
-            player.move(tileMap,window.getSize());
+
+            // Atualizando a posição do jogador
+            deltaTime = clock.restart();
+            player.move(deltaTime, tileMap,window.getSize());
 
 
             window.clear();
