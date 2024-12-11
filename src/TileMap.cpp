@@ -65,7 +65,7 @@ void TileMap::generateIntegrationField(Vector2f goalFloat){
             int ny = current.y + dir.second;
 
             //verifica limites do mapa
-            if(nx < 0 | nx >= (int)TILE_MAP_W || ny < 0 || ny >= (int)TILE_MAP_H){
+            if(nx < 0 || nx >= (int)TILE_MAP_W || ny < 0 || ny >= (int)TILE_MAP_H){
                 continue;
             }
             //calcula a nova distancia
@@ -301,6 +301,13 @@ Vector2f TileMap::getInitPlayerPosition(){
 //retorna se a posicao é um objetivo
 int TileMap::verifyPosition(Vector2f position) {
     pair<int, int> gridPos = pixelsToTileGrid(position);
+    
+    if (gridPos.first < 0 || gridPos.first >= TILE_MAP_W ||
+        gridPos.second < 0 || gridPos.second >= TILE_MAP_H) {
+        // Se o player tenta sair do mapa, retornamos um obstáculo ou algo que impeça o movimento.
+        return OBSTACLE;
+    }
+    
     switch (tiles[gridPos.second][gridPos.first].getId()) {
         case OBSTACLE:
             return OBSTACLE;
@@ -310,6 +317,7 @@ int TileMap::verifyPosition(Vector2f position) {
             return 0;
     }
 }
+
 
 int TileMap::getTileSize() {
     return this->tileSize;

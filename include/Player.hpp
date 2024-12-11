@@ -26,6 +26,9 @@ class Player {
         Sprite sprite;
         int size;
 
+        float offsetX;              // Offset para ajustar a posição do sprite
+        float offsetY;              // Offset para ajustar a posição do sprite
+
     public:
         Player(Vector2f initPosition, Texture &texture, int tileSize);
 

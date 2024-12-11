@@ -13,6 +13,10 @@ Player::Player(Vector2f initPosition, Texture &texture, int tileSize) {
     this->sprite.setTexture(texture);
     this->sprite.setScale(tileSize / 16, tileSize / 16 );
     this->size = 16 * this->sprite.getScale().x;
+
+    // Ajusta a origem do sprite para o centro
+    this->sprite.setOrigin(this->size / 2.f, this->size / 2.f);
+    this->sprite.setPosition(this->position);
 }
 
 // Getters
@@ -34,9 +38,11 @@ void Player::setPosition(Vector2f position, Vector2u screenSize) {
     // Verificações para permitir o movimento 
     // Fazer If da colisão com blocos!!!
 
-    if(!(position.x < 0 || position.x  >= screenSize.x - this->size))
+    float halfSize = this->size / 2.f;
+
+    if (!(position.x - halfSize < 0 || position.x + halfSize >= screenSize.x))
         this->position.x = position.x;
-    if(!(position.y < 0 || position.y >= screenSize.y - this->size))
+    if (!(position.y - halfSize < 0 || position.y + halfSize >= screenSize.y))
         this->position.y = position.y;
 
     // Movendo o sprite na tela
