@@ -3,7 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <iostream>
+
 using namespace sf;
+using namespace std;
 
 
 class Rat {
@@ -20,6 +23,7 @@ class Rat {
     private:
         float x, y, radius;
         CircleShape shape;
+        Texture ratTexture;
 };
 
 #endif // RAT_H

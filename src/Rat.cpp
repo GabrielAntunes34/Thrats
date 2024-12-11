@@ -2,14 +2,21 @@
 #include <cmath>
 #include <SFML/System/Vector2.hpp>
 
+
 Rat::Rat(float x, float y, float radius) {
     this->x = x;
     this->y = y;
     this->radius = radius;
 
     shape.setRadius(radius);
-    shape.setFillColor(Color::Red);
     shape.setPosition(x, y);
+
+
+    // textura do objetivo
+    if(!this->ratTexture.loadFromFile("assets/ratinho.png")) {
+        cerr << "Erro ao carregar a textura do objetivo" << endl;
+    }    
+    shape.setTexture(&ratTexture);
 }
 
 void Rat::draw(RenderWindow &window) {
@@ -24,6 +31,8 @@ bool Rat::move(Vector2f flow) {
     this->y += flow.y;
     this->x += flow.x;
     shape.move(flow.x, flow.y);
+    float angle = atan2(flow.y, flow.x) * 180 / M_PI;
+    shape.setRotation(angle);
     return true;
 }
 

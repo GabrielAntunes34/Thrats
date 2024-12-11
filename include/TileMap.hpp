@@ -46,7 +46,7 @@ class TileMap {
 
         int getTileSize();
 
-        
+
         int verifyPosition(Vector2f position);
 
         // Operações do tileMap
@@ -56,7 +56,7 @@ class TileMap {
 
         
         // para pathfinding
-        void generateIntegrationField(Vector2u goal);
+        void generateIntegrationField(Vector2f goal);
         void generateFlowField();
 
 };

@@ -22,7 +22,9 @@ struct Node{
     }
 };
 
-void TileMap::generateIntegrationField(Vector2u goal){
+void TileMap::generateIntegrationField(Vector2f goalFloat){
+
+    Vector2u goal = Vector2u((unsigned int)goalFloat.x, (unsigned int)goalFloat.y);
     //Primeiro, inicializando todas as distancias com infinito
     for(int y = 0; y < TILE_MAP_H; y++){
         for(int x = 0; x < TILE_MAP_W; x++){
@@ -40,7 +42,7 @@ void TileMap::generateIntegrationField(Vector2u goal){
 
     //fila de prioridade para o algoritmo de Dijkstra (min heap)
     priority_queue<Node, vector<Node>, greater<Node>> frontier;
-    frontier.push({goal.x, goal.y, 0.0f}); //adiciona o goal na fila
+    frontier.push({static_cast<unsigned int>(goal.x), static_cast<unsigned int>(goal.y), 0.0f}); //adiciona o goal na fila
 
     //Vizinhos (8-direçoes)
     vector<pair<int,int>> directions = {
@@ -203,22 +205,14 @@ TileMap::TileMap(Vector2u screenSize) {
         cerr << "Erro ao carregar a textura do chão" << endl;
     }
 
-    // textura obstaculo (temporária)
-    RectangleShape rectangle(Vector2f(this->tileSize, this->tileSize)); // Define o tamanho do retângulo
-    rectangle.setFillColor(Color::Blue); // Define a cor do retângulo como azul
-
-    RenderTexture renderTexture;
-    renderTexture.create(50, 50); // Tamanho da textura
-    renderTexture.clear(Color::Transparent);
-    renderTexture.draw(rectangle);
-    renderTexture.display();
-    this->obstacleTexture = renderTexture.getTexture(); // Salva a textura de obstáculos como membro da classe
-
-    rectangle.setFillColor(Color::Green);
-    renderTexture.clear(Color::Transparent);
-    renderTexture.draw(rectangle);
-    this->goalTexture = renderTexture.getTexture(); // Salva a textura de objetivo
-    
+    // textura obstaculo 
+    if(!this->obstacleTexture.loadFromFile("assets/caixa_cima.png")) {
+        cerr << "Erro ao carregar a textura do obstáculo" << endl;
+    }
+    // textura do objetivo
+    if(!this->goalTexture.loadFromFile("assets/luz.png")) {
+        cerr << "Erro ao carregar a textura do objetivo" << endl;
+    }    
 
     // LEMBRAR DE AJUSTAR O ASPECT RATIO OU NA MAIN, OU EM ALGUM ARQUIVO DE CONFIG
 }
@@ -248,6 +242,7 @@ Tile TileMap::getTile(int i, int j) {
 
 // Dado o nome de um CSV, essa função mapeaia todos os tiles lógicos e gráficos do nível
 bool TileMap::loadMap(const string &fileName) {
+    cout << "Carregando mapa: " << fileName << endl;
     vector<vector<int>> csvMatrix;
 
     // Lendo o CSV e instanciando os tiles lógicos (por enquanto)
