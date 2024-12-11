@@ -9,10 +9,11 @@ all:
 	g++ -c ./src/Rat.cpp -o ./src/Rat.o
 	g++ -c ./src/TileMap.cpp -o ./src/TileMap.o
 	g++ -c ./src/Tile.cpp -o ./src/Tile.o
+	g++ -c ./src/Menu.cpp -o ./src/Menu.o
 
 
 	g++ -c ./src/main.cpp -o ./src/main.o
-	g++ ./src/main.o ./src/Rat.o ./src/Tile.o ./src/TileMap.o  -o ./src/sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+	g++ ./src/main.o ./src/Rat.o ./src/Tile.o ./src/TileMap.o ./src/Menu.o  -o ./src/sfml-app -lsfml-graphics -lsfml-window -lsfml-system
 
 clear:
 	rm ./src/*.o
