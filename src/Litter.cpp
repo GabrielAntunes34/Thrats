@@ -1,5 +1,6 @@
 #include "../include/Litter.hpp"
 #include <SFML/System/Vector2.hpp>
+#include <unordered_map>
 
 //funçao auxiliar
 pair<int, int> getGridPosition(const Vector2f& position, float gridSize) {
