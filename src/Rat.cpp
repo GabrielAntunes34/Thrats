@@ -27,7 +27,7 @@ void Rat::draw(RenderWindow &window) {
     window.draw(shape);
 }
 
-bool Rat::move(sf::Vector2f flow, sf::Vector2f separation, Vector2u screenSize) {
+int Rat::move(sf::Vector2f flow, sf::Vector2f separation, Vector2u screenSize, sf::FloatRect playerBounds) {
     if (std::fabs(flow.x) < 0.0001f && std::fabs(flow.y) < 0.0001f) {
         return false;
     }
@@ -55,7 +55,12 @@ bool Rat::move(sf::Vector2f flow, sf::Vector2f separation, Vector2u screenSize) 
 
     float angle = std::atan2(combined.y, combined.x) * 180 / M_PI;
     shape.setRotation(angle);
-    return true;
+
+    if (playerBounds.intersects(shape.getGlobalBounds())) {
+        return 2;
+    }
+
+    return 1;
 }
 
 Vector2f Rat::getPosition() {

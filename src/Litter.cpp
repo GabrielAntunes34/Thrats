@@ -28,7 +28,7 @@ Litter::Litter(Vector2f spawn, int size,  TileMap &tileMap)
     }   
 }
 
-void Litter::update(Vector2u screen_size) {
+bool Litter::update(Vector2u screen_size, FloatRect playerBounds) {
     // Particionamento espacial: mapa de grid para os ratos
         unordered_map<long, vector<int>> spatialGrid; // Chave combinada de grid x e y
         for(int i = 0; i < rats.size(); ++i) {
@@ -91,8 +91,9 @@ void Litter::update(Vector2u screen_size) {
             }
 
             // Mover o rato com o fluxo e a separação
-            currentRat.move(flow, separation, screen_size);
+            if (currentRat.move(flow, separation, screen_size, playerBounds)==2) return true;
         }
+        return false;
 }
 
 void Litter::draw(RenderWindow &window){
