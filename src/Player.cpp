@@ -5,7 +5,8 @@ Player::Player(Vector2f initPosition, Texture &texture, int tileSize) {
     this->alive = true;
     this->tangibility = true;
     this->moving = false;
-    this->velocity = Vector2f(0.f, 0.f);
+    this->velocity = 0.f;
+    this->currentDirection = Vector2f(0.f, 0.f);
     this->position = initPosition;
 
     // Atributos do sprite
@@ -39,6 +40,7 @@ void Player::setPosition(Vector2f position, Vector2u screenSize) {
         this->position.y = position.y;
 
     // Movendo o sprite na tela
+    cout << this->position.x << "  " << this->position.y << endl;
     this->sprite.setPosition(this->position);
 }
 
@@ -53,38 +55,64 @@ void Player::setTangibility(bool tangibility) {
 
 // Mechanics
 // Recebe o input dos usuário e move o personagem de acordo.
-void Player::move(TileMap tileMap, Vector2u screenSize) {
-    Vector2f newPosition(this->position.x, this->position.y);  // armazenará a posição final com o movimento
-    //Vector2f direction(0.f, 0.f);   // Armazenaŕa o vetor direção do movimento atual
+void Player::move(Time deltaTime, TileMap tileMap, Vector2u screenSize) {
+    Vector2f newPosition;           // armazenará a posição final com o movimento
+    float norma;                    // Auxiliar para corrigir movimentos horizontais
 
     // Obtendo o input do usuário
     if(Keyboard::isKeyPressed(Keyboard::W)) {
-        newPosition.y -= 5.f;
+        this->currentDirection.y -= 1.f;
         this->moving = true;
     }
     if(Keyboard::isKeyPressed(Keyboard::D)) {
-        newPosition.x += 5.f;
+        this->currentDirection.x += 1.f;
         this->moving = true;
     }
     if(Keyboard::isKeyPressed(Keyboard::S)) {
-        newPosition.y += 5.f;
+        this->currentDirection.y += 1.f;
         this->moving = true;
     }
     if(Keyboard::isKeyPressed(Keyboard::A)) {
-        newPosition.x -= 5.f;
+        this->currentDirection.x -= 1.f;
         this->moving = true;
     }
 
+    //this->moving = true;
+    //direction.x = 1.f;
+
     // Impedindo que as duas direções se acumulem em movimentos horizontais
+    // Pela normalização do vetor
+    if(this->currentDirection.x != 0.f || this->currentDirection.y != 0.f) {
+        norma = sqrt(this->currentDirection.x * this->currentDirection.x + this->currentDirection.y * this->currentDirection.y);
+        this->currentDirection /= norma;
+    }
 
+    // Atualizando a velocidade coforme o input
+    if(this->moving) {
+        this->velocity += ACELERATION * deltaTime.asSeconds();
+        if(this->velocity > MAX_VELOCITY)
+            this->velocity = MAX_VELOCITY;  // Limite superior da velocidade
+    }
+    else {
+        if(this->velocity > 0.f) {
+            this->velocity -= DECELERATION * deltaTime.asSeconds();
+        }
+        else {
+            this->velocity = 0.f; // Limite inferiror da velocidade
+            this->currentDirection.x = 0;
+            this->currentDirection.y = 0;
+        }
+    }
 
+    // Calculando newPosition
+    newPosition = this->position + this->currentDirection * this->velocity * deltaTime.asSeconds();
     
     // Se não colidir com um obstáculo, atualizamos a posição
-    //if(tileMap.verifyPosition(newPosition) != OBSTACLE)
+    if(tileMap.verifyPosition(newPosition) != OBSTACLE)
         this->setPosition(newPosition, screenSize);
     
     // Resetando "moving" para o próximo loop
-    //this->moving = false;
+    this->moving = false;
 }
 
 void Player::draw(RenderWindow &window) {
