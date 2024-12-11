@@ -6,6 +6,7 @@
 
 #include "../include/TileMap.hpp"
 #include "../include/Rat.h"
+#include "../include/Menu.hpp"
 #include "../include/Player.hpp"
 
 
@@ -62,45 +63,53 @@ int main()
     player.setPosition(tileMap.getInitPlayerPosition(), window.getSize());
 
 
+    Menu menu(window, "assets/Pixeled.ttf");
+    // Mostrar o menu e obter a seleção
+    int menuSelection = menu.run(tileMap);
+
     while (window.isOpen())
     {
-        Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == Event::Closed)
-                window.close();
+        if (menuSelection == 0) {
+            Event event;
+            while (window.pollEvent(event))
+            {
+                if (event.type == Event::Closed)
+                    window.close();
+            }
+
+            tileMap.generateIntegrationField(ratTilePos);
+            tileMap.generateFlowField();
+
+            // ver o tile q o rato tá
+            auto [x, y] = rat.getPosition();
+            auto [a, b] = tileMap.pixelsToTileGrid(Vector2f(x, y));
+            Tile rat_tile = tileMap.getTile(b, a);
+            // pegar o vetor de mov. desse tile e atualizar a pos do rato
+            Vector2f vector = rat_tile.getFlowDirection();
+            rat.move(vector);
+            player.move(tileMap,window.getSize());
+
+
+            window.clear();
+            
+            tileMap.draw(window);
+            rat.draw(window);
+            tileMap.drawFlowField(window);
+
+            //verifica se o player chegou no objetivo
+            if(tileMap.verifyPosition(player.getPosition()) == GOAL){
+                cout << "Player chegou no objetivo" << endl;
+                current_map = (current_map + 1) % maps_available;
+                tileMap.loadMap("assets/map"+to_string(current_map)+".csv");
+                player.setPosition(tileMap.getInitPlayerPosition(), window.getSize());
+            }
+
+            window.display();
         }
         
-        // ver o tile q o rato tá
-        auto [x, y] = rat.getPosition();
-        auto [a, b] = tileMap.pixelsToTileGrid(Vector2f(x, y));
-        Tile rat_tile = tileMap.getTile(b, a);
-
-        tileMap.generateIntegrationField(ratTilePos);
-        tileMap.generateFlowField();
-
-        // pegar o vetor de mov. desse tile e atualizar a pos do rato
-        Vector2f vector = rat_tile.getFlowDirection();
-        rat.move(vector);
-        player.move(tileMap,window.getSize());
-
-
-        window.clear();
-
-        tileMap.draw(window);
-        rat.draw(window);
-        tileMap.drawFlowField(window);
-
-        //verifica se o player chegou no objetivo
-        if(tileMap.verifyPosition(player.getPosition()) == GOAL){
-            cout << "Player chegou no objetivo" << endl;
-            current_map = (current_map + 1) % maps_available;
-            tileMap.loadMap("assets/map"+to_string(current_map)+".csv");
-            player.setPosition(tileMap.getInitPlayerPosition(), window.getSize());
-        }
-
-        window.display();
     }
+        
+        
 
     return 0;
 }
