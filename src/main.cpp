@@ -99,8 +99,12 @@ int main()
             // rat.move(vector);
 
             // Atualizando a posição do rato
-            litter.update(window.getSize());
-            litter2.update(window.getSize());
+            if (litter.update(window.getSize(), player.getBounds())) {
+                // colocar oq acontece qnd colide player com rato aq
+            }
+            if (litter2.update(window.getSize(), player.getBounds())) {
+                // colocar oq acontece qnd colide player com rato aq
+            }
 
             // Atualizando a posição do jogador
             Time deltaTime = clock.restart();
@@ -127,8 +131,7 @@ int main()
             }
 
             window.display();
-        }
-        
+        } 
     }
         
         

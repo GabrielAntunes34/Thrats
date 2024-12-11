@@ -34,6 +34,7 @@ class Player {
 
         // Getters
         Vector2f getPosition();
+        FloatRect getBounds();
         bool isAlive();
         bool isTangible();
 

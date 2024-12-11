@@ -13,7 +13,7 @@ class Rat {
     public:
         Rat(float x, float y, float radius);
         //mover o rato
-        bool move(Vector2f flow, Vector2f separation, Vector2u screenSize);
+        int move(Vector2f flow, Vector2f separation, Vector2u screenSize, FloatRect playerBounds);
         //desenhar o rato
         void draw(RenderWindow &window);
 

@@ -123,3 +123,7 @@ void Player::move(Time deltaTime, TileMap tileMap, Vector2u screenSize) {
 void Player::draw(RenderWindow &window) {
     window.draw(this->sprite);
 }
+
+sf::FloatRect Player::getBounds() {
+    return this->sprite.getGlobalBounds();
+}

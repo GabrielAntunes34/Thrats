@@ -19,7 +19,7 @@ class Litter {
 
     public:
         Litter(Vector2f spawn, int size, TileMap &tileMap);
-        void update(Vector2u screen_size);
+        bool update(Vector2u screen_size, FloatRect playerBounds);
         
 
 
