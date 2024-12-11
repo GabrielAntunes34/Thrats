@@ -4,23 +4,25 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include "../include/TileMap.hpp"
 
 using namespace sf;
 using namespace std;
 
 
-#define MAX_SPEED 200.f
-#define ACELERATION 400.f
-#define DECELERATION 500.f
+#define MAX_VELOCITY 350.f
+#define ACELERATION 220.f
+#define DECELERATION 325.f
 
 class Player {
     private:
-        Vector2f position;
-        Vector2f velocity;
-        bool moving;
-        bool alive;
-        bool tangibility;
+        Vector2f position;          // Posição atual do jogador
+        Vector2f currentDirection;  // Guarda a direção do deslocamento atá a velocidade zerar
+        float velocity;             // Armazena o vetor velocidade do movimento
+        bool moving;                // Verifica se ele está se movmento
+        bool alive;                 // Verifica se ele está vivo
+        bool tangibility;           // Verifica se ele é tangível
         Sprite sprite;
         int size;
 
@@ -38,7 +40,7 @@ class Player {
         void setTangibility(bool tangibility);
 
         // Mechanics
-        void move(TileMap tileMap, Vector2u screenSize);
+        void move(Time deltaTime, TileMap tileMap, Vector2u screenSize);
         void draw(RenderWindow &window);
 
 };
