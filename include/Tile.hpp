@@ -9,6 +9,7 @@ using namespace sf;
 #define ENEMY 1
 #define GROUND 2
 #define OBSTACLE 3
+#define GOAL 4
 
 class Tile {
     private:

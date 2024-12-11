@@ -1,6 +1,7 @@
 #ifndef TILEMAP_H
 #define TILEMAP_H
 
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 #include <utility>
@@ -27,6 +28,7 @@ class TileMap {
         Texture tileTexture;
         Texture groundTexture; 
         Texture obstacleTexture;
+        Texture goalTexture;
 
         Vector2f initPlayerPosition;        // Posição inicial do jogador
         vector<Vector2f> enemiesPositions;   // Lista coms as posições iniciais de cada grupo de ratos
@@ -41,6 +43,11 @@ class TileMap {
 
         Vector2f getInitPlayerPosition();
         Tile getTile(int i, int j);
+
+        int getTileSize();
+
+        
+        int verifyPosition(Vector2f position);
 
         // Operações do tileMap
         bool loadMap(const string &fileName);

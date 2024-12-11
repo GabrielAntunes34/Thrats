@@ -181,6 +181,7 @@ int calculateTileSize(Vector2u screenSize) {
 }
 
 
+
 ////////////////////////////////
 //          métodos           //
 ////////////////////////////////
@@ -213,8 +214,15 @@ TileMap::TileMap(Vector2u screenSize) {
     renderTexture.display();
     this->obstacleTexture = renderTexture.getTexture(); // Salva a textura de obstáculos como membro da classe
 
+    rectangle.setFillColor(Color::Green);
+    renderTexture.clear(Color::Transparent);
+    renderTexture.draw(rectangle);
+    this->goalTexture = renderTexture.getTexture(); // Salva a textura de objetivo
+    
+
     // LEMBRAR DE AJUSTAR O ASPECT RATIO OU NA MAIN, OU EM ALGUM ARQUIVO DE CONFIG
 }
+
 
 // Função que converte coordenadas no tile map em coordenadas da tela (pixels)
 Vector2f TileMap::tileGridToPixel(int i, int j) {
@@ -230,6 +238,7 @@ pair<int, int> TileMap::pixelsToTileGrid(Vector2f position) {
     gridPos.second = (int) (position.y - (this->tileSize / 2)) / this->tileSize;
     return gridPos;
 }
+
 
 // funcao que pega (i,j) da matriz de tiles do TileMap e devolve o Tile
 Tile TileMap::getTile(int i, int j) {
@@ -275,6 +284,11 @@ bool TileMap::loadMap(const string &fileName) {
                 this->tiles[i][j].setCost(infy);
 
                 break;
+
+            case GOAL:
+                this->tiles[i][j].setSprite(this->goalTexture, correcaoEscala);
+                this->tiles[i][j].setCost(1.0f);
+                break;
             default:
                 this->tiles[i][j].setSprite(this->groundTexture, correcaoEscala);  // Ground
                 this->tiles[i][j].setCost(1.0f);
@@ -291,6 +305,23 @@ Vector2f TileMap::getInitPlayerPosition(){
     return this->initPlayerPosition;
 }   
 
+//retorna se a posicao é um objetivo
+int TileMap::verifyPosition(Vector2f position) {
+    pair<int, int> gridPos = pixelsToTileGrid(position);
+    switch (tiles[gridPos.second][gridPos.first].getId()) {
+        case OBSTACLE:
+            return OBSTACLE;
+        case GOAL:
+            return GOAL;
+        default:
+            return 0;
+    }
+}
+
+int TileMap::getTileSize() {
+    return this->tileSize;
+}
+
 // Desenhando os tiles na tela, pegando a posição de cada um e colocando em relaçao ao tamanho do tile
 void TileMap::draw(RenderWindow &window){
     for(int i = 0; i < TILE_MAP_H; i++) {
@@ -300,7 +331,6 @@ void TileMap::draw(RenderWindow &window){
             window.draw(this->tiles[i][j].getSprite());
         }
     }    
-
 }
 
 void TileMap::drawFlowField(RenderWindow &window){
