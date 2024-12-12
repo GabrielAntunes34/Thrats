@@ -173,8 +173,6 @@ int main() {
                 litters[i].draw(window);
             }
 
-            tileMap.drawFlowField(window);
-
             //verifica se o player chegou no objetivo
             if(tileMap.verifyPosition(player.getPosition()) == GOAL){
                 // Atualizando o índice de mapas
@@ -190,8 +188,6 @@ int main() {
                 player.setPosition(tileMap.getInitPlayerPosition(), window.getSize());
                 litters.clear();
                 littersInLevel = tileMap.getEnemiesPositions().size();
-                cout << littersInLevel << endl;
-                cout << litters.size() << endl;
                 initLitters(litters, tileMap, littersInLevel);
 
                 // Initicializando as novas threads
