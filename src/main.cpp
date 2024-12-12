@@ -19,19 +19,12 @@ using namespace sf;
 using namespace std;
 
 
-#define MAPS_AVAILABLE 3
-
-
-// Iniciaiza e seta todos os atributos necessários do jogador para o contexto
-// geral do jogo
-//void initPlayer(Player &player, TileMap &tileMap, RenderWindow &window) {
-    
-//}
+#define MAPS_AVAILABLE 10
 
 // Inicializa o vetor de ninhadas
 void initLitters(vector<Litter> &litters, TileMap &tileMap, int size) {
     for(int i = 0; i < size; i++) {
-        litters.push_back(Litter(tileMap.getEnemiesPositions()[i], 200, tileMap));
+        litters.push_back(Litter(tileMap.getEnemiesPositions()[i], 20, tileMap));
     } 
 }
 
@@ -56,7 +49,6 @@ void initLitterThreads(vector<thread> &threads, vector<Litter> &litters, Player 
 
                     if(death || !player.isAlive()) {
                         player.setLife(false);
-                        cout << "aqui 1" << endl;
                         //sem_wait(&deathSemaphore);
                         mtx.unlock();
                         //deathSemaphore.lock();
@@ -72,13 +64,9 @@ void initLitterThreads(vector<thread> &threads, vector<Litter> &litters, Player 
 }
 
 void clearLitterThreads(vector<thread> &threads) {
-    cout << "DAqui nao" << endl;
-
     for(int i = 0; i < threads.size(); i++) {
-        threads[i].join();
+        threads[i].detach();
     }
-
-    cout << "passa" << endl;
 }
 
 int main() {
@@ -131,7 +119,7 @@ int main() {
     // Instanciando ninhadas e threads
     initLitters(litters, tileMap, littersInLevel);
     initLitterThreads(littersThreads, litters, player, window, levelRunning, mtx, deathSemaphore);    
-
+    clearLitterThreads(littersThreads);
 
     // =================
     // MENU
@@ -191,16 +179,19 @@ int main() {
             if(tileMap.verifyPosition(player.getPosition()) == GOAL){
                 // Atualizando o índice de mapas
                 mtx.lock();
-                current_map = (current_map + 1) % MAPS_AVAILABLE;
+                current_map = (current_map + 1);
+                if(current_map == 11)
+                    current_map = 1;
+
                 tileMap.loadMap("assets/map"+to_string(current_map)+".csv");
 
-                cout << "Carregando mapa " << current_map << endl;
-                cout << "assets/map"+to_string(current_map)+".csv" << endl;
 
-                // Carregando o mapa e resetando a posição do player e dos Litters
+                // resetando a posição do player e dos Litters
                 player.setPosition(tileMap.getInitPlayerPosition(), window.getSize());
                 litters.clear();
                 littersInLevel = tileMap.getEnemiesPositions().size();
+                cout << littersInLevel << endl;
+                cout << litters.size() << endl;
                 initLitters(litters, tileMap, littersInLevel);
 
                 // Initicializando as novas threads
@@ -211,14 +202,9 @@ int main() {
             // Verificando se o player morreu :(
             if(!player.isAlive()) {
                 mtx.lock();
-                    cout << endl << "Foi com deus!!" << endl;
-
                     // Limpando as threads atuais e o vetor de litters
-                    clearLitterThreads(littersThreads);
+                    //clearLitterThreads(littersThreads);
                     litters.clear();
-
-                    cout<< "Liberou threads" << endl;
-
 
                     // Voltando o jogo ao estado inicial da fase em questão
                     player.setPosition(tileMap.getInitPlayerPosition(), window.getSize());
@@ -240,6 +226,7 @@ int main() {
         levelRunning = false;
     mtx.unlock();
     for(int i = 0 ; i < littersInLevel; i++) {
+        if(littersThreads[i].joinable())
         littersThreads[i].join();
     }
 

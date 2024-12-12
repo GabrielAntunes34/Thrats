@@ -292,6 +292,9 @@ bool TileMap::loadMap(const string &fileName) {
     cout << "Carregando mapa: " << fileName << endl;
     vector<vector<int>> csvMatrix;
 
+    // Resetando o vetor de inimigos no caso de carregarmos um mapa de outra fase
+    this->enemiesPositions.clear();
+
     // Lendo o CSV e instanciando os tiles lógicos (por enquanto)
     csvMatrix = readCsv(fileName);
 
@@ -308,7 +311,7 @@ bool TileMap::loadMap(const string &fileName) {
 
             switch(this->tiles[i][j].getId()) {
             case PLAYER:
-                this->initPlayerPosition = tileGridToPixel(i, j);
+                this->initPlayerPosition = tileGridToPixel(j, i);
                 this->tiles[i][j].setSprite(this->groundTexture, correcaoEscala); // sprite do chão
                 this->tiles[i][j].setCost(1.0f);
                 break;
