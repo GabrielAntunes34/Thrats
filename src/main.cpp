@@ -28,10 +28,10 @@ void initLitters(vector<Litter> &litters, TileMap &tileMap, int size) {
     } 
 }
 
-void initLitterThreads(vector<thread> &threads, vector<Litter> &litters, Player &player, RenderWindow &window, bool &running, mutex &mtx, mutex &deathSemaphore) {
+void initLitterThreads(vector<thread> &threads, vector<Litter> &litters, Player &player, RenderWindow &window, bool &running, mutex &mtx) {
     // Inicializando uma nova thread para cada ninhada
     for(int i = 0; i < litters.size(); i++) {
-        threads.push_back(thread([&litters, &window, &player, i, &running, &mtx, &deathSemaphore](){
+        threads.push_back(thread([&litters, &window, &player, i, &running, &mtx](){
             while(true) {
                 bool death = false;
 
@@ -41,17 +41,13 @@ void initLitterThreads(vector<thread> &threads, vector<Litter> &litters, Player 
                         mtx.unlock();
                         break;
                     }
-                    //mtx.unlock();
-
 
                     // Se sim, atualizamos os ratos
                     death = litters[i].update(window.getSize(), player.getBounds());
 
                     if(death || !player.isAlive()) {
                         player.setLife(false);
-                        //sem_wait(&deathSemaphore);
                         mtx.unlock();
-                        //deathSemaphore.lock();
                         break;
                     }
                 mtx.unlock();
@@ -109,7 +105,6 @@ int main() {
     bool levelRunning = true;     // Indica quando o jogo requer que as threads atualizem os ratos
     mutex mtx;
     //sem_t deathSemaphore;
-    mutex deathSemaphore;
 
     // Variáveis de controle das ninhadas
     vector<Litter> litters;
@@ -118,7 +113,7 @@ int main() {
 
     // Instanciando ninhadas e threads
     initLitters(litters, tileMap, littersInLevel);
-    initLitterThreads(littersThreads, litters, player, window, levelRunning, mtx, deathSemaphore);    
+    initLitterThreads(littersThreads, litters, player, window, levelRunning, mtx);    
     clearLitterThreads(littersThreads);
 
     // =================
@@ -191,7 +186,7 @@ int main() {
                 initLitters(litters, tileMap, littersInLevel);
 
                 // Initicializando as novas threads
-                initLitterThreads(littersThreads, litters, player, window, levelRunning, mtx, deathSemaphore);
+                initLitterThreads(littersThreads, litters, player, window, levelRunning, mtx);
                 mtx.unlock();
             }
 
@@ -208,7 +203,7 @@ int main() {
                     initLitters(litters, tileMap, littersInLevel);
 
                     // Reinicializando as threads
-                    initLitterThreads(littersThreads, litters, player, window, levelRunning, mtx, deathSemaphore);
+                    initLitterThreads(littersThreads, litters, player, window, levelRunning, mtx);
                 mtx.unlock();
             }
 
