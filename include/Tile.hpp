@@ -6,10 +6,10 @@
 using namespace sf;
 
 #define PLAYER 0
-#define ENEMY 1
-#define GROUND 2
-#define OBSTACLE 3
-#define GOAL 4
+#define ENEMY 3
+#define GROUND 1
+#define OBSTACLE 4
+#define GOAL 2
 
 class Tile {
     private:

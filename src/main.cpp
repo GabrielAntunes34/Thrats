@@ -23,7 +23,7 @@ int main()
     // MAPAS
     // ===============
 
-    int maps_available = 3; //MAPAS DISPONIVEIS
+    int maps_available = 10; //MAPAS DISPONIVEIS
     int current_map = 1; //MAPA ATUAL
 
 

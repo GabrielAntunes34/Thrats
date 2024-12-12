@@ -102,7 +102,7 @@ void TileMap::generateFlowField(){
 
                 if (y+1 >= TILE_MAP_H) {
                     if (tiles[y-1][x].getId() != OBSTACLE) {
-                        dir.y = 1;
+                        dir.y = -1;
                     }
                     if (x+1 >= TILE_MAP_W) {
                         if (tiles[y][x-1].getId() != OBSTACLE) {

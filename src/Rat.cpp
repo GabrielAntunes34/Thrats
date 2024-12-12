@@ -40,7 +40,7 @@ int Rat::move(sf::Vector2f flow, sf::Vector2f separation, Vector2u screenSize, s
     float newY = this->y + combined.y;
 
     // Verifica se não sai da tela, considerando half-size
-    float halfSize = 0;
+    float halfSize = this->size / 2;
     if (!(newX - halfSize < 0 || newX + halfSize >= screenSize.x))
         this->x = newX;
     else
