@@ -12,19 +12,23 @@ using namespace std;
 class Rat {
     public:
         Rat(float x, float y, float radius);
-        //mover o rato
-        int move(Vector2f flow, Vector2f separation, Vector2u screenSize, FloatRect playerBounds);
-        //desenhar o rato
-        void draw(RenderWindow &window);
+        //mover o rato, retorna se colidiu com o player
+        int move(                       
+            Vector2f flow,                  //direção do flow field
+            Vector2f separation,            //direção de separação
+            Vector2u screenSize,            //tamanho da tela
+            FloatRect playerBounds);        //bounding box do player
 
-        Vector2f getPosition();
-        int getRadius();
+        void draw(RenderWindow &window);    //desenha o rato
+
+        Vector2f getPosition();             //retorna a posição do rato
+        int getRadius();                    //retorna o raio do rato
 
     private:
-        float x, y, radius;
-        CircleShape shape;
-        Texture ratTexture;
-        int size;
+        float x, y, radius;                 //posição e raio do rato
+        CircleShape shape;                  //forma do rato
+        Texture ratTexture;                 //textura do rato
+        int size;                           //tamanho do rato
 };
 
 #endif // RAT_H

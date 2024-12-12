@@ -38,28 +38,28 @@ class TileMap {
         TileMap(Vector2u screenSize);
 
         // Operações entre tela e tileMap
-        Vector2f tileGridToPixel(int i, int j);
-        pair<int, int> pixelsToTileGrid(Vector2f position);
+        Vector2f tileGridToPixel(int i, int j);                 // Converte a posição do tile para a posição na tela
+        pair<int, int> pixelsToTileGrid(Vector2f position);     // Converte a posição na tela para a posição do tile
 
-        Vector2f getInitPlayerPosition();
-        Tile getTile(int i, int j);
+        Vector2f getInitPlayerPosition();                       // Retorna a posição inicial do jogador
+        Tile getTile(int i, int j);                             // Retorna o tile na posição (i, j)
 
-        int getTileSize();
+        int getTileSize();                                      // Retorna o tamanho do tile
 
 
-        int verifyPosition(Vector2f position);
+        int verifyPosition(Vector2f position);                  // Verifica se a posição é um obstáculo ou um objetivo
 
         // Operações do tileMap
-        bool loadMap(const string &fileName);
-        void draw(RenderWindow &window);
-        void drawFlowField(RenderWindow &window);
+        bool loadMap(const string &fileName);                   // Carrega o mapa de um arquivo CSV
+        void draw(RenderWindow &window);                        // Desenha o tileMap na tela
+        void drawFlowField(RenderWindow &window);               // Desenha o flow field na tela
 
         
         // para pathfinding
-        void generateIntegrationField(Vector2f goal);
-        void generateFlowField();
+        void generateIntegrationField(Vector2f goal);           // Gera o campo de integração
+        void generateFlowField();                               // Gera o campo de fluxo
 
-        vector<Vector2f> getEnemiesPositions();
+        vector<Vector2f> getEnemiesPositions();                 // Retorna as posições iniciais dos inimigos
 
 };
 

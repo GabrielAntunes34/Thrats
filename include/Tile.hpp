@@ -5,34 +5,35 @@
 #include <SFML/System/Vector2.hpp>
 using namespace sf;
 
-#define PLAYER 0
-#define ENEMY 3
+//ID dos tiles =================================
+#define PLAYER 0     
 #define GROUND 1
-#define OBSTACLE 4
 #define GOAL 2
+#define ENEMY 3
+#define OBSTACLE 4
 
 class Tile {
     private:
-        int id;
-        bool tangibility;
-        Sprite sprite;
+        int id;             //ID do tile
+        bool tangibility;   //Se o tile é tangível
+        Sprite sprite;      //Sprite do tile
 
-        float cost; //custo deste tile
-        float distance; //distancia do tile destino (Integration field)
-        Vector2f flowDirection; //Diretaçao do flow field
+        float cost;                 //custo deste tile
+        float distance;             //distancia do tile destino (Integration field)
+        Vector2f flowDirection;     //Diretaçao do flow field
 
     public:   
         // Getters
-        int getId();
-        bool isTangible();
-        Sprite& getSprite();
-        int getCost();
-        float getDistance();
-        Vector2f getFlowDirection();
+        int getId();                 //retorna o id do tile
+        bool isTangible();           //retorna se o tile é tangível
+        Sprite& getSprite();         //retorna o sprite do tile
+        int getCost();               //retorna o custo do tile
+        float getDistance();         //retorna a distancia do tile destino
+        Vector2f getFlowDirection(); //retorna a direção do flow field
 
 
         // Setters
-        void setTaniblity(bool tangibility);
+        void setTaniblity(bool tangibility);      //
         void setId(int id);
         void setSprite(Texture &texture, float correcao);
 
